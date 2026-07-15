@@ -12,11 +12,11 @@
 		<dialog id="dialog-book">
 			<form id="dialogForm">
 				<label for="name">Name</label>
-				<input type="text" name="name" id="name">
+				<input type="text" name="name" id="name" required>
 				<label for="description">Description</label>
-				<input type="text" name="description" id="descriptio">
+				<input type="text" name="description" id="descriptio" required>
 				<label for="autor">Autor</label>
-				<input type="text" name="autor" id="autor">
+				<input type="text" name="autor" id="autor" required>
 				<select id="completed">
 					<option value="1">finish</option>
 					<option value="2">reading</option>
@@ -26,7 +26,7 @@
 			</form>
 			<div class="dialog-buttons">
 				<button commandfor="dialog-book" command="close" >close</button>
-				<button id="addBtn">add</button>
+				<button id="addBtn" commandfor="dialog-book" command="close">add</button>
 			</div>
 		</dialog>
 		<button command="show-modal" commandfor="dialog-book" class="newBook">New Book</button>

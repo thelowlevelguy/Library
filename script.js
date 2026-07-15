@@ -31,7 +31,6 @@ const myLibrary = [
   }
 ];
 
-
 function Book(name, autor, descriptio, readed) {
   // the constructor...
   this.id = crypto.randomUUID();
@@ -55,19 +54,6 @@ function displayBooks(myLibrary){
 }
 
 function addNewBook(){
-
-}
-
-function deleteBook(){
-
-}
-
-function changeReadStatus(){
-
-}
-
-function getBookInfo(){
-
   const dialogForm = dialogBook.querySelector("#dialogForm");
   const name = dialogForm.querySelector("#name").value;
   const autor =  dialogForm.querySelector("#autor").value;
@@ -77,6 +63,13 @@ function getBookInfo(){
 
   console.log(name, autor, descriptio, completed)
   addBookToLibrary(name, autor, descriptio, completed)
+  dialogForm.reset();
+}
+
+function deleteBook(){
+}
+
+function changeReadStatus(){
 }
 
 function createCard(book){
@@ -103,6 +96,5 @@ function createCard(book){
 }
 
 displayBooks(myLibrary)
-newBookBtn.addEventListener("click", addNewBook)
-addBtn.addEventListener("click", getBookInfo)
+addBtn.addEventListener("click", addNewBook)
 
