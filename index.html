@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<title>Library</title>
+</head>
+<body>
+	<div class="container">
+		<div class="library"></div>
+		<dialog id="dialog-book">
+			<form id="dialogForm">
+				<label for="name">Name</label>
+				<input type="text" name="name" id="name">
+				<label for="description">Description</label>
+				<input type="text" name="description" id="descriptio">
+				<label for="autor">Autor</label>
+				<input type="text" name="autor" id="autor">
+				<select id="completed">
+					<option value="1">finish</option>
+					<option value="2">reading</option>
+					<option value="3" selected>not started</option>
+				</select>
+				
+			</form>
+			<div class="dialog-buttons">
+				<button commandfor="dialog-book" command="close" >close</button>
+				<button id="addBtn">add</button>
+			</div>
+		</dialog>
+		<button command="show-modal" commandfor="dialog-book" class="newBook">New Book</button>
+	</div>
+		
+	</dialog>
+
+<script src="script.js"></script>
+</body>
+</html>
