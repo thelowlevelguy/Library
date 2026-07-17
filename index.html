@@ -19,10 +19,8 @@
 				<input type="text" name="autor" id="autor" required>
 				<select id="completed">
 					<option value="1">finish</option>
-					<option value="2">reading</option>
-					<option value="3" selected>not started</option>
+					<option value="2" selected>pending</option>
 				</select>
-				
 			</form>
 			<div class="dialog-buttons">
 				<button commandfor="dialog-book" command="close" >close</button>
@@ -31,8 +29,6 @@
 		</dialog>
 		<button command="show-modal" commandfor="dialog-book" class="newBook">New Book</button>
 	</div>
-		
-	</dialog>
 
 <script src="script.js"></script>
 </body>

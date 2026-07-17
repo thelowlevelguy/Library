@@ -6,33 +6,36 @@ const addBtn = dialogBook.querySelector("#addBtn")
 
 const myLibrary = [
   {
+    id: "1",
     name: "The Hobbit",
     autor: "J.R.R. Tolkien",
     descriptio: "A quiet hobbit is swept into an epic quest to reclaim a lost kingdom.\nAlong the way, he discovers courage and a powerful, mysterious ring.",
-    readed: true
+    readed: "finish",
   },
   {
+    id: "2",
     name: "Atomic Habits",
     autor: "James Clear",
     descriptio: "A practical guide to breaking bad habits and building good ones.\nIt focuses on tiny, daily changes that compound into massive life results.",
-    readed: false
+    readed: "finish",
   },
   {
+    id: "3",
     name: "1984",
     autor: "George Orwell",
     descriptio: "A chilling look at a dystopian society under constant government surveillance.\nIt follows one man's quiet rebellion against an all-powerful Big Brother.",
-    readed: true
+    readed: "finish",
   },
   {
+    id: "4",
     name: "The Rust Programming Language",
     autor: "Steve Klabnik & Carol Nichols",
     descriptio: "The official guide to learning Rust, focusing on safety and speed.\nIt covers everything from basic syntax to advanced memory management.",
-    readed: false
+    readed: "pending"
   }
 ];
 
 function Book(name, autor, descriptio, readed) {
-  // the constructor...
   this.id = crypto.randomUUID();
   this.name = name;
   this.autor = autor;
@@ -47,8 +50,8 @@ function addBookToLibrary(name, autor, descriptio, readed) {
   createCard(book);
 }
 
-function displayBooks(myLibrary){
-  myLibrary.forEach((book, index) => {
+function displayBooks(){
+  myLibrary.forEach((book) => {
     createCard(book);
   })
 }
@@ -66,35 +69,82 @@ function addNewBook(){
   dialogForm.reset();
 }
 
-function deleteBook(){
+function deleteBook(event){
+  const id = event.target.parentElement.getAttribute("data-id");
+  myLibrary.forEach((book, index) => {
+    if (book.id == id){
+      //syntax for finding a data attribute propriety using querySelector
+      const child = document.querySelector(`[data-id="${id}"]`);
+      lib.removeChild(child);
+      myLibrary.splice(index, 1);
+    }
+  })
 }
 
-function changeReadStatus(){
+function changeReadStatus(event){
+    const parent = event.target.parentElement;
+    const readStatus = parent.querySelector(".readStatus")
+    readStatus.textContent = readStatus.textContent == "pending" ? "finish" : "pending"
 }
 
 function createCard(book){
 
   const bookCard = document.createElement("div");
   bookCard.setAttribute("class", "bookCard");
+  bookCard.setAttribute("data-id", `${book.id}`)
 
   const nameDiv = document.createElement("div");
   const autorDiv = document.createElement("div");
   const descriptioDiv = document.createElement("div");
   const readedDiv = document.createElement("div");
 
+  const readStatusBtn = document.createElement("button")
+  const deleteBtn = document.createElement("button")
+
   nameDiv.textContent = book.name;
   autorDiv.textContent = book.autor;
   descriptioDiv.textContent = book.descriptio;
   readedDiv.textContent = book.readed;
 
+  readedDiv.setAttribute("class", "readStatus")
+  readStatusBtn.setAttribute("class", "readStatusBtn");
+  deleteBtn.setAttribute("class", "deleteBookBtn")
+  readStatusBtn.textContent = "Mark as read";
+  deleteBtn.textContent = "Delete";
+
   bookCard.appendChild(nameDiv);
   bookCard.appendChild(descriptioDiv);
   bookCard.appendChild(autorDiv);
   bookCard.appendChild(readedDiv);
+  bookCard.appendChild(readStatusBtn);
+  bookCard.appendChild(deleteBtn)
 
   lib.appendChild(bookCard);
 }
 
-displayBooks(myLibrary)
-addBtn.addEventListener("click", addNewBook)
+// Options for the observer (which mutations to observe)
+const config = {attributes: true, childList: true, subtree: true};
+// Callback function to execute when mutations are observed
+const callback = (mutationList, observer) => {
+  for (const mutation of mutationList){
+    if (mutation.type === "childList" || mutation.type === "attributes") {
+      console.log(mutation.type)
+      const deleteBtn = document.querySelectorAll(".deleteBookBtn")
+      const readStatusBtn = document.querySelectorAll(".readStatusBtn")
+      deleteBtn.forEach((button) => {
+        button.addEventListener("click", deleteBook)
+      })
+       readStatusBtn.forEach((button) => {
+        button.addEventListener("click", changeReadStatus)
+      })
+    }
+  }
+}
 
+// Create an observer instance linked to the callback function
+const observer = new MutationObserver(callback)
+// Start observing the target node for configured mutations
+observer.observe(container, config)
+
+displayBooks()
+addBtn.addEventListener("click", addNewBook)
