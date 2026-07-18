@@ -13,19 +13,17 @@
 			<form id="dialogForm">
 				<label for="name">Name</label>
 				<input type="text" name="name" id="name" required>
-				<label for="description">Description</label>
-				<input type="text" name="description" id="descriptio" required>
+				<label for="descriptio">Description</label>
+				<input type="text" name="descriptio" id="descriptio" required>
 				<label for="autor">Autor</label>
 				<input type="text" name="autor" id="autor" required>
-				<select id="completed">
-					<option value="1">finish</option>
-					<option value="2" selected>pending</option>
+				<select name="status">
+					<option value="finish">finish</option>
+					<option value="pending" selected>pending</option>
 				</select>
+				<button type="submit">add</button>
 			</form>
-			<div class="dialog-buttons">
-				<button commandfor="dialog-book" command="close" >close</button>
-				<button id="addBtn" commandfor="dialog-book" command="close">add</button>
-			</div>
+			<button commandfor="dialog-book" command="close">close</button>
 		</dialog>
 		<button command="show-modal" commandfor="dialog-book" class="newBook">New Book</button>
 	</div>

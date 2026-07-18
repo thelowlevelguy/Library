@@ -2,7 +2,7 @@ const lib = document.querySelector(".library")
 const newBookBtn = document.querySelector(".newBook")
 const container = document.querySelector(".container");
 const dialogBook = document.querySelector("#dialog-book");
-const addBtn = dialogBook.querySelector("#addBtn")
+const dialogForm = dialogBook.querySelector("#dialogForm");
 
 const myLibrary = [
   {
@@ -56,16 +56,15 @@ function displayBooks(){
   })
 }
 
-function addNewBook(){
-  const dialogForm = dialogBook.querySelector("#dialogForm");
-  const name = dialogForm.querySelector("#name").value;
-  const autor =  dialogForm.querySelector("#autor").value;
-  const descriptio =  dialogForm.querySelector("#descriptio").value;
-  const select =  dialogForm.querySelector("#completed");
-  const completed = select.options[select.selectedIndex].text;
+function addNewBook(event){
+  event.preventDefault();
+  const formData = new FormData(dialogForm);
+  const name = formData.get("name")
+  const autor = formData.get("autor")
+  const descriptio = formData.get("descriptio")
+  const select = formData.get("status")
 
-  console.log(name, autor, descriptio, completed)
-  addBookToLibrary(name, autor, descriptio, completed)
+  addBookToLibrary(name, autor, descriptio, select)
   dialogForm.reset();
 }
 
@@ -128,7 +127,6 @@ const config = {attributes: true, childList: true, subtree: true};
 const callback = (mutationList, observer) => {
   for (const mutation of mutationList){
     if (mutation.type === "childList" || mutation.type === "attributes") {
-      console.log(mutation.type)
       const deleteBtn = document.querySelectorAll(".deleteBookBtn")
       const readStatusBtn = document.querySelectorAll(".readStatusBtn")
       deleteBtn.forEach((button) => {
@@ -147,4 +145,4 @@ const observer = new MutationObserver(callback)
 observer.observe(container, config)
 
 displayBooks()
-addBtn.addEventListener("click", addNewBook)
+dialogForm.addEventListener("submit", addNewBook)
