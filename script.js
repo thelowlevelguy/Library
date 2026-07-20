@@ -65,6 +65,7 @@ function addNewBook(event){
   const select = formData.get("status")
 
   addBookToLibrary(name, autor, descriptio, select)
+  dialogBook.close();
   dialogForm.reset();
 }
 
