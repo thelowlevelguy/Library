@@ -1,8 +1,7 @@
-const lib = document.querySelector(".library")
-const newBookBtn = document.querySelector(".newBook")
-const container = document.querySelector(".container");
+const booksContainer = document.querySelector(".books")
 const dialogBook = document.querySelector("#dialog-book");
 const dialogForm = dialogBook.querySelector("#dialogForm");
+
 
 const myLibrary = [
   {
@@ -47,10 +46,11 @@ function addBookToLibrary(name, autor, descriptio, readed) {
   // take params, create a book then store it in the array
   const book = new Book(name, autor, descriptio, readed);
   myLibrary.push(book);
-  createCard(book);
+  renderBooks();
 }
 
-function displayBooks(){
+function renderBooks(){
+  booksContainer.textContent = "";
   myLibrary.forEach((book) => {
     createCard(book);
   })
@@ -59,32 +59,31 @@ function displayBooks(){
 function addNewBook(event){
   event.preventDefault();
   const formData = new FormData(dialogForm);
-  const name = formData.get("name")
-  const autor = formData.get("autor")
-  const descriptio = formData.get("descriptio")
-  const select = formData.get("status")
-
-  addBookToLibrary(name, autor, descriptio, select)
+  addBookToLibrary(
+    formData.get("name"),
+    formData.get("autor"),
+    formData.get("descriptio"),
+    formData.get("status")
+  )
   dialogBook.close();
   dialogForm.reset();
 }
 
-function deleteBook(event){
-  const id = event.target.parentElement.getAttribute("data-id");
-  myLibrary.forEach((book, index) => {
-    if (book.id == id){
-      //syntax for finding a data attribute propriety using querySelector
-      const child = document.querySelector(`[data-id="${id}"]`);
-      lib.removeChild(child);
-      myLibrary.splice(index, 1);
+function handleClick(event) {
+  const parent = event.target;
+  if (parent.closest(".deleteBookBtn")){
+    const id = parent.parentElement.getAttribute("data-id");
+    const child = document.querySelector(`[data-id="${id}"]`);
+    const bookIndex = myLibrary.findIndex(book => book.id === id);
+    if (bookIndex > -1){
+        myLibrary.splice(bookIndex, 1);
+        booksContainer.removeChild(child);
     }
-  })
-}
-
-function changeReadStatus(event){
-    const parent = event.target.parentElement;
-    const readStatus = parent.querySelector(".readStatus")
+    //renderBooks()
+  }else if (parent.closest(".readStatusBtn")){
+    const readStatus = parent.parentElement.querySelector(".readStatus")
     readStatus.textContent = readStatus.textContent == "pending" ? "finish" : "pending"
+  }
 }
 
 function createCard(book){
@@ -119,31 +118,9 @@ function createCard(book){
   bookCard.appendChild(readStatusBtn);
   bookCard.appendChild(deleteBtn)
 
-  lib.appendChild(bookCard);
+  booksContainer.appendChild(bookCard);
 }
 
-// Options for the observer (which mutations to observe)
-const config = {attributes: true, childList: true, subtree: true};
-// Callback function to execute when mutations are observed
-const callback = (mutationList, observer) => {
-  for (const mutation of mutationList){
-    if (mutation.type === "childList" || mutation.type === "attributes") {
-      const deleteBtn = document.querySelectorAll(".deleteBookBtn")
-      const readStatusBtn = document.querySelectorAll(".readStatusBtn")
-      deleteBtn.forEach((button) => {
-        button.addEventListener("click", deleteBook)
-      })
-       readStatusBtn.forEach((button) => {
-        button.addEventListener("click", changeReadStatus)
-      })
-    }
-  }
-}
-
-// Create an observer instance linked to the callback function
-const observer = new MutationObserver(callback)
-// Start observing the target node for configured mutations
-observer.observe(container, config)
-
-displayBooks()
-dialogForm.addEventListener("submit", addNewBook)
+dialogForm.addEventListener("submit", addNewBook);
+booksContainer.addEventListener("click", handleClick);
+renderBooks()

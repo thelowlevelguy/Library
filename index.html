@@ -8,7 +8,12 @@
 </head>
 <body>
 	<div class="container">
-		<div class="library"></div>
+		<div class="library">
+			<div>
+				<button command="show-modal" commandfor="dialog-book" class="newBook">New Book</button>
+			</div>
+			<div class="books"></div>
+		</div>
 		<dialog id="dialog-book">
 			<form id="dialogForm">
 				<label for="name">Name</label>
@@ -25,7 +30,6 @@
 			</form>
 			<button commandfor="dialog-book" command="close">close</button>
 		</dialog>
-		<button command="show-modal" commandfor="dialog-book" class="newBook">New Book</button>
 	</div>
 <script src="script.js"></script>
 </body>
