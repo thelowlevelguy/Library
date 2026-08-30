@@ -169,7 +169,7 @@ button {
 }
 
 #dialog-book select {
-	pointer: cursor;
+	cursor: pointer;
 	border: none;
 	font-weight: 700;
 }
