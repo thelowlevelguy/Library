@@ -48,6 +48,7 @@ class Library {
     dialogForm.reset();
   }
 
+
   handleClick(event) {
       const parent = event.target;
       if (parent.closest(".deleteBookBtn")){
@@ -98,18 +99,51 @@ class Library {
     booksContainer.appendChild(bookCard);
   }
 
-   renderBooks(){
+  renderBooks(){
     booksContainer.textContent = "";
     this.books.forEach((book) => {
       this.createCard(book);
     })
   }
 
+  validateForm(){
+    const autor = document.getElementById("autor");
+    const bookName = document.getElementById("name");
+
+    if (bookName.value.trim().length < 3) {
+      bookName.setCustomValidity("Le nom du livre doit contenir au moins 3 caractères.");
+      bookName.reportValidity();
+      return;
+    } else {
+      bookName.setCustomValidity(""); 
+    }
+
+    if (autor.value.trim().length < 3) {
+      autor.setCustomValidity("Le nom du livre doit contenir au moins 3 caractères.");
+      autor.reportValidity();
+      return;
+    } else {
+      autor.setCustomValidity("");
+    }
+    this.addNewBook();
+  }
+
   init(){
+    const bookName = document.getElementById("name");
+    const autor = document.getElementById("autor");
+
+    bookName.addEventListener("input", () => {
+      bookName.setCustomValidity("");
+    });
+
+    autor.addEventListener("input", () => {
+      autor.setCustomValidity("");
+    });
+
     dialogForm.addEventListener("submit", (e) => {
       e.preventDefault();
-      this.addNewBook();
-      this.renderBooks()
+      this.validateForm();
+      this.renderBooks();
     });
 
     booksContainer.addEventListener("click", (e) => this.handleClick(e));
